@@ -23,8 +23,8 @@ public class AuthenticationController : ControllerBase
             request.Password
         );
         var response = new AuthenticationResponse(
-            authResult.Id,
-            authResult.Email,
+            authResult.User.Id,
+            authResult.User.Email,
             authResult.Token
         );
         return Ok(response);
@@ -38,8 +38,8 @@ public class AuthenticationController : ControllerBase
             request.Password
         );
         var response = new AuthenticationResponse(
-            authResult.Id,
-            authResult.Email,
+            authResult.User.Id,
+            authResult.User.Email,
             authResult.Token
         );
         return Ok(response);

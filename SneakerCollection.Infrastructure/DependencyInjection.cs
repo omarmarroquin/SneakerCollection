@@ -2,6 +2,7 @@
 using SneakerCollection.Application.Common.Interfaces.Authentication;
 using SneakerCollection.Application.Common.Interfaces.Services;
 using SneakerCollection.Infrastructure.Authentication;
+using SneakerCollection.Infrastructure.Persistence;
 using SneakerCollection.Infrastructure.Services;
 
 namespace SneakerCollection.Infrastructure;
@@ -13,8 +14,12 @@ public static class DependencyInjection
     Microsoft.Extensions.Configuration.IConfiguration configuration)
   {
     services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
+
     services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
     services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
+
+    services.AddScoped<IUserRepository, UserRepository>();
+
     return services;
   }
 }

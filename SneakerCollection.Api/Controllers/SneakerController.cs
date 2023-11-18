@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
-[Route("senaker")]
+[Route("sneaker")]
 public class SneakerController : ControllerBase
 {
     [HttpGet("collection")]

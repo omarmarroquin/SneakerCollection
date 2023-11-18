@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using SneakerCollection.Application.Common.Interfaces.Authentication;
 using SneakerCollection.Application.Common.Interfaces.Services;
+using SneakerCollection.Domain.Entities;
 
 namespace SneakerCollection.Infrastructure.Authentication;
 
@@ -19,7 +20,7 @@ public class JwtTokenGenerator : IJwtTokenGenerator
     _jwtSettings = JwtOptions.Value;
   }
 
-  public string GenerateToken(Guid userId, string email)
+  public string GenerateToken(User user)
   {
     var signingCredentials = new SigningCredentials(
       new SymmetricSecurityKey(
@@ -30,8 +31,8 @@ public class JwtTokenGenerator : IJwtTokenGenerator
 
     var claims = new[]
     {
-      new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
-      new Claim(JwtRegisteredClaimNames.Email, email),
+      new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+      new Claim(JwtRegisteredClaimNames.Email, user.Email),
       new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
     };
 
