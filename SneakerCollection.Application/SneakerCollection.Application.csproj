@@ -9,6 +9,9 @@
   <ItemGroup>
     <ProjectReference Include="..\SneakerCollection.Domain\SneakerCollection.Domain.csproj" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="1.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="1.0.0" />
   </ItemGroup>
 
 </Project>
