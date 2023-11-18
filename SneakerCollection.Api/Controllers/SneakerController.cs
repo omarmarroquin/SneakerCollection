@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
+using SneakerCollection.Api.Controllers;
 
-[ApiController]
 [Route("sneaker")]
-public class SneakerController : ControllerBase
+public class SneakerController : ApiController
 {
     [HttpGet("collection")]
     public IActionResult GetList()

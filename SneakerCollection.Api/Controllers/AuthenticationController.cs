@@ -1,12 +1,12 @@
 using SneakerCollection.Contracts.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using SneakerCollection.Application.Services;
+using ErrorOr;
 
 namespace SneakerCollection.Api.Controllers;
 
-[ApiController]
 [Route("auth")]
-public class AuthenticationController : ControllerBase
+public class AuthenticationController : ApiController
 {
     private readonly IAuthenticationService _authenticationService;
 
@@ -18,30 +18,37 @@ public class AuthenticationController : ControllerBase
     [HttpPost("login")]
     public IActionResult Login(LoginRequest request)
     {
-        var authResult = _authenticationService.Login(
+        ErrorOr<AuthenticationResult> authResult = _authenticationService.Login(
             request.Email,
             request.Password
         );
-        var response = new AuthenticationResponse(
-            authResult.User.Id,
-            authResult.User.Email,
-            authResult.Token
+
+        return authResult.Match(
+            authResult => Ok(MapAuthResult(authResult)),
+            errors => Problem(errors)
         );
-        return Ok(response);
     }
 
     [HttpPost("register")]
     public IActionResult Register(RegisterRequest request)
     {
-        var authResult = _authenticationService.Register(
+        ErrorOr<AuthenticationResult> authResult = _authenticationService.Register(
             request.Email,
             request.Password
         );
-        var response = new AuthenticationResponse(
+
+        return authResult.Match(
+            authResult => Ok(MapAuthResult(authResult)),
+            errors => Problem(errors)
+        );
+    }
+
+    private static AuthenticationResponse MapAuthResult(AuthenticationResult authResult)
+    {
+        return new AuthenticationResponse(
             authResult.User.Id,
             authResult.User.Email,
             authResult.Token
         );
-        return Ok(response);
     }
 }

@@ -1,7 +1,9 @@
+using ErrorOr;
+
 namespace SneakerCollection.Application.Services;
 
 public interface IAuthenticationService
 {
-  AuthenticationResult Login(string email, string password);
-  AuthenticationResult Register(string email, string password);
+  ErrorOr<AuthenticationResult> Login(string email, string password);
+  ErrorOr<AuthenticationResult> Register(string email, string password);
 }

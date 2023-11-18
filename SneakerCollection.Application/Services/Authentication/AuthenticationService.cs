@@ -1,4 +1,6 @@
+using ErrorOr;
 using SneakerCollection.Application.Common.Interfaces.Authentication;
+using SneakerCollection.Domain.Common.Errors;
 using SneakerCollection.Domain.Entities;
 using SneakerCollection.Infrastructure.Persistence;
 
@@ -15,18 +17,12 @@ public class AuthenticationService : IAuthenticationService
     _userRepository = userRepository;
   }
 
-  public AuthenticationResult Login(string email, string password)
+  public ErrorOr<AuthenticationResult> Login(string email, string password)
   {
-    // Check if user already exists
-    if (_userRepository.GetUserByEmail(email) is not User user)
+    // Check if user don't exists or password is incorrect
+    if (_userRepository.GetUserByEmail(email) is not User user || (user.Password != password))
     {
-      throw new Exception("User does not exist");
-    }
-
-    // Check if password is correct
-    if (user.Password != password)
-    {
-      throw new Exception("Password is incorrect");
+      return Errors.Authentication.InvalidCredentials;
     }
 
     // Create JWT token
@@ -38,12 +34,12 @@ public class AuthenticationService : IAuthenticationService
     );
   }
 
-  public AuthenticationResult Register(string email, string password)
+  public ErrorOr<AuthenticationResult> Register(string email, string password)
   {
     // 1. Check if user already exists
     if (_userRepository.GetUserByEmail(email) is not null)
     {
-      throw new Exception("User already exists");
+      return Errors.User.DuplicateEmail;
     }
 
     // 2. Create user (geneate unique id, hash password, etc.)
