@@ -28,11 +28,7 @@ public class RegisterCommandHandle : IRequestHandler<RegisterCommand, ErrorOr<Au
     }
 
     // 2. Create user (geneate unique id, hash password, etc.)
-    var user = new User
-    {
-      Email = command.Email,
-      Password = command.Password
-    };
+    var user = User.Create(command.Email, command.Password);
     _userRepository.Add(user);
 
     // 3. Create JWT token
