@@ -19,20 +19,16 @@ public class LoginQueryHandle : IRequestHandler<LoginQuery, ErrorOr<Authenticati
     _userRepository = userRepository;
   }
 
-  public async Task<ErrorOr<AuthenticationResult>> Handle(LoginQuery command, CancellationToken cancellationToken)
+  public Task<ErrorOr<AuthenticationResult>> Handle(LoginQuery command, CancellationToken cancellationToken)
   {
-    // Check if user don't exists or password is incorrect
     if (_userRepository.GetUserByEmail(command.Email) is not User user || (user.Password != command.Password))
-    {
-      return Errors.Authentication.InvalidCredentials;
-    }
+      return Task.FromResult<ErrorOr<AuthenticationResult>>(Errors.Authentication.InvalidCredentials);
 
-    // Create JWT token
     var token = _jwtTokenGenerator.GenerateToken(user);
 
-    return new AuthenticationResult(
+    return Task.FromResult<ErrorOr<AuthenticationResult>>(new AuthenticationResult(
       user,
       token
-    );
+    ));
   }
 }

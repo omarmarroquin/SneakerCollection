@@ -21,17 +21,13 @@ public class RegisterCommandHandle : IRequestHandler<RegisterCommand, ErrorOr<Au
 
   public async Task<ErrorOr<AuthenticationResult>> Handle(RegisterCommand command, CancellationToken cancellationToken)
   {
-    // 1. Check if user already exists
     if (_userRepository.GetUserByEmail(command.Email) is not null)
-    {
       return Errors.User.DuplicateEmail;
-    }
 
-    // 2. Create user (geneate unique id, hash password, etc.)
     var user = User.Create(command.Email, command.Password);
+
     _userRepository.Add(user);
 
-    // 3. Create JWT token
     var token = _jwtTokenGenerator.GenerateToken(user);
 
     return new AuthenticationResult(

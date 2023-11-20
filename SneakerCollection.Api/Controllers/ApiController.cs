@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using ErrorOr;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,12 @@ namespace SneakerCollection.Api.Controllers;
 [Authorize]
 public class ApiController : ControllerBase
 {
+  protected Guid? GetUserId()
+  {
+    var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+    return !string.IsNullOrEmpty(userId) ? Guid.Parse(userId) : null;
+  }
+
   protected IActionResult Problem(List<Error> errors)
   {
     if (errors.Count is 0)
