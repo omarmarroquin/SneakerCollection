@@ -1,6 +1,6 @@
 using SneakerCollection.Domain.Common.Models;
 
-namespace SneakerCollection.Domain.User.ValuesObjects;
+namespace SneakerCollection.Domain.SneakerAggregate.ValueObjects;
 
 public sealed class SneakerId : ValueObject
 {

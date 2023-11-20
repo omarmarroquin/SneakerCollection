@@ -10,5 +10,10 @@ public static partial class Errors
       code: "User.DuplicateEmail",
       description: "Email already exists."
     );
+
+    public static Error UserNotFound = Error.NotFound(
+      code: "User.UserNotFound",
+      description: "User not found."
+    );
   }
 }

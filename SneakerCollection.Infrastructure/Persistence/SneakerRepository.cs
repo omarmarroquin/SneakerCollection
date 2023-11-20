@@ -1,4 +1,4 @@
-using SneakerCollection.Domain.Entities;
+using SneakerCollection.Domain.SneakerAggregate;
 
 namespace SneakerCollection.Infrastructure.Persistence;
 
@@ -18,7 +18,7 @@ public class SneakerRepository : ISneakerRepository
   public List<Sneaker> ListSneakersByUserId(Guid userId)
   {
     return _sneaker
-      .Except(_sneaker.Where(s => s.UserId.Value != userId))
+      .Except(_sneaker.Where(s => s.UserId != userId))
       .ToList();
   }
 

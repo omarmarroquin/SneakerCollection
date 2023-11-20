@@ -1,9 +1,9 @@
 using ErrorOr;
 using MediatR;
+using SneakerCollection.Application.Authentication.Common;
 using SneakerCollection.Application.Common.Interfaces.Authentication;
-using SneakerCollection.Application.Services;
 using SneakerCollection.Domain.Common.Errors;
-using SneakerCollection.Domain.Entities;
+using SneakerCollection.Domain.UserAggregate;
 using SneakerCollection.Infrastructure.Persistence;
 
 namespace SneakerCollection.Application.Authentication.Commands.Register;
@@ -19,10 +19,10 @@ public class RegisterCommandHandle : IRequestHandler<RegisterCommand, ErrorOr<Au
     _userRepository = userRepository;
   }
 
-  public async Task<ErrorOr<AuthenticationResult>> Handle(RegisterCommand command, CancellationToken cancellationToken)
+  public Task<ErrorOr<AuthenticationResult>> Handle(RegisterCommand command, CancellationToken cancellationToken)
   {
     if (_userRepository.GetUserByEmail(command.Email) is not null)
-      return Errors.User.DuplicateEmail;
+      return Task.FromResult<ErrorOr<AuthenticationResult>>(Errors.User.DuplicateEmail);
 
     var user = User.Create(command.Email, command.Password);
 
@@ -30,9 +30,9 @@ public class RegisterCommandHandle : IRequestHandler<RegisterCommand, ErrorOr<Au
 
     var token = _jwtTokenGenerator.GenerateToken(user);
 
-    return new AuthenticationResult(
+    return Task.FromResult<ErrorOr<AuthenticationResult>>(new AuthenticationResult(
       user,
       token
-    );
+    ));
   }
 }

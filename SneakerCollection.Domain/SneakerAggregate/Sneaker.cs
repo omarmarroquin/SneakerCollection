@@ -1,11 +1,11 @@
 using SneakerCollection.Domain.Common.Models;
-using SneakerCollection.Domain.User.ValuesObjects;
+using SneakerCollection.Domain.SneakerAggregate.ValueObjects;
 
-namespace SneakerCollection.Domain.Entities;
+namespace SneakerCollection.Domain.SneakerAggregate;
 
 public sealed class Sneaker : AggregateRoot<SneakerId>
 {
-  public UserId UserId { get; set; } = null!;
+  public Guid UserId { get; set; }
   public string Name { get; set; } = null!;
   public string Brand { get; set; } = null!;
   public int Price { get; set; }
@@ -15,16 +15,17 @@ public sealed class Sneaker : AggregateRoot<SneakerId>
   public DateTime CreatedAt { get; set; }
   public DateTime UpdatedAt { get; set; }
 
-  public Sneaker(
-    SneakerId senakerId,
-    UserId userId,
+  private Sneaker(
+    SneakerId sneakerId,
+    Guid userId,
     string name,
     string brand,
     int price,
     int size,
     int rate,
+    int year,
     DateTime createdAt,
-    DateTime updatedAt) : base(senakerId)
+    DateTime updatedAt) : base(sneakerId)
   {
     UserId = userId;
     Name = name;
@@ -32,17 +33,19 @@ public sealed class Sneaker : AggregateRoot<SneakerId>
     Price = price;
     Size = size;
     Rate = rate;
+    Year = year;
     CreatedAt = createdAt;
     UpdatedAt = updatedAt;
   }
 
   public static Sneaker Create(
-    UserId userId,
+    Guid userId,
     string name,
     string brand,
     int price,
     int size,
-    int rate)
+    int rate,
+    int year)
   {
     return new(
       SneakerId.CreateUnique(),
@@ -52,6 +55,7 @@ public sealed class Sneaker : AggregateRoot<SneakerId>
       price,
       size,
       rate,
+      year,
       DateTime.UtcNow,
       DateTime.UtcNow);
   }

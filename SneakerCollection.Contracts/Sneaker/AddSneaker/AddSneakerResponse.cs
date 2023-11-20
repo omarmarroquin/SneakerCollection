@@ -1,6 +1,6 @@
-namespace SneakerCollection.Contracts.Sneaker;
+namespace SneakerCollection.Contracts.Sneaker.AddSneaker;
 
-public record SneakerResponse(
+public record AddSneakerResponse(
   Guid Id,
   Guid UserId,
   string Name,
@@ -11,8 +11,4 @@ public record SneakerResponse(
   int Rate,
   DateTime CreatedAt,
   DateTime UpdatedAt
-);
-
-public record ListSneakersResponse(
-  List<SneakerResponse> Sneakers
 );

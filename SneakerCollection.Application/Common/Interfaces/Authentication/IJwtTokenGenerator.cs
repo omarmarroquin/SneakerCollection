@@ -1,4 +1,4 @@
-using SneakerCollection.Domain.Entities;
+using SneakerCollection.Domain.UserAggregate;
 
 namespace SneakerCollection.Application.Common.Interfaces.Authentication;
 public interface IJwtTokenGenerator

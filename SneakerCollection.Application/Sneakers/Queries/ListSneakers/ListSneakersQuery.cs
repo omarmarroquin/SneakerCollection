@@ -1,8 +1,8 @@
 using ErrorOr;
 using MediatR;
-using SneakerCollection.Application.Services;
+using SneakerCollection.Application.Sneakers.Common;
 
-namespace SneakerCollection.Application.Authentication.Commands.Register;
+namespace SneakerCollection.Application.Sneakers.Queries.ListSneakers;
 
 public record ListSneakersQuery(
   Guid UserId,

@@ -1,7 +1,7 @@
 using SneakerCollection.Domain.Common.Models;
-using SneakerCollection.Domain.User.ValuesObjects;
+using SneakerCollection.Domain.UserAggregate.ValueObjects;
 
-namespace SneakerCollection.Domain.Entities;
+namespace SneakerCollection.Domain.UserAggregate;
 
 public sealed class User : AggregateRoot<UserId>
 {

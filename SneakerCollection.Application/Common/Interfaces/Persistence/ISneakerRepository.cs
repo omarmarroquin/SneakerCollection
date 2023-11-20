@@ -1,4 +1,4 @@
-using SneakerCollection.Domain.Entities;
+using SneakerCollection.Domain.SneakerAggregate;
 
 namespace SneakerCollection.Infrastructure.Persistence;
 

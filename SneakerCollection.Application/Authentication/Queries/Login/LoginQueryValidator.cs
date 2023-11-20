@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace SneakerCollection.Application.Authentication.Commands.Register;
+namespace SneakerCollection.Application.Authentication.Queries.Login;
 
 public class LoginQueryValidator : AbstractValidator<LoginQuery>
 {

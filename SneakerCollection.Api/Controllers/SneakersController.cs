@@ -1,10 +1,13 @@
-using Microsoft.AspNetCore.Mvc;
-using SneakerCollection.Api.Controllers;
-using SneakerCollection.Application.Authentication.Commands.Register;
-using SneakerCollection.Contracts.Sneaker;
 using ErrorOr;
-using SneakerCollection.Application.Services;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using SneakerCollection.Application.Sneakers.Commands.AddSneaker;
+using SneakerCollection.Application.Sneakers.Common;
+using SneakerCollection.Application.Sneakers.Queries.ListSneakers;
+using SneakerCollection.Contracts.Sneaker.AddSneaker;
+using SneakerCollection.Contracts.Sneaker.ListSneakers;
+
+namespace SneakerCollection.Api.Controllers;
 
 [Route("sneakers")]
 public class SneakersController : ApiController
@@ -15,13 +18,27 @@ public class SneakersController : ApiController
   {
     _mediator = mediator;
   }
+  private static AddSneakerResponse MapAddSneakerResult(AddSneakerResult addSneakerResult)
+  {
+    return new AddSneakerResponse(
+      addSneakerResult.Sneaker.Id.Value,
+      addSneakerResult.Sneaker.UserId,
+      addSneakerResult.Sneaker.Name,
+      addSneakerResult.Sneaker.Brand,
+      addSneakerResult.Sneaker.Price,
+      addSneakerResult.Sneaker.Size,
+      addSneakerResult.Sneaker.Year,
+      addSneakerResult.Sneaker.Rate,
+      addSneakerResult.Sneaker.CreatedAt,
+      addSneakerResult.Sneaker.UpdatedAt);
+  }
 
   private static ListSneakersResponse MapListSneakersResult(ListSneakersResult listSneakersResult)
   {
     return new ListSneakersResponse(
       listSneakersResult.Sneakers.ConvertAll(sneaker => new SneakerResponse(
         sneaker.Id.Value,
-        sneaker.UserId.Value,
+        sneaker.UserId,
         sneaker.Name,
         sneaker.Brand,
         sneaker.Price,
@@ -41,11 +58,33 @@ public class SneakersController : ApiController
     if (GetUserId() is not Guid userId)
       return Problem();
 
-    var query = new ListSneakersQuery(userId, request.FilterValue, request.SortBy);
-    ErrorOr<ListSneakersResult> listSneakersResult = await _mediator.Send(query);
+    var listSneakersQuery = new ListSneakersQuery(userId, request.FilterValue, request.SortBy);
+    ErrorOr<ListSneakersResult> listSneakersResult = await _mediator.Send(listSneakersQuery);
 
     return listSneakersResult.Match(
       listSneakersResult => Ok(MapListSneakersResult(listSneakersResult)),
+      errors => Problem(errors)
+    );
+  }
+
+  [HttpPost]
+  public async Task<IActionResult> Add(AddSneakerRequest request)
+  {
+    if (GetUserId() is not Guid userId)
+      return Problem();
+
+    var addSneakerQuery = new AddSneakerCommand(
+      userId,
+      request.Name,
+      request.Brand,
+      request.Price,
+      request.Size,
+      request.Year,
+      request.Rate);
+    ErrorOr<AddSneakerResult> addSneakersResult = await _mediator.Send(addSneakerQuery);
+
+    return addSneakersResult.Match(
+      addSneakersResult => Ok(MapAddSneakerResult(addSneakersResult)),
       errors => Problem(errors)
     );
   }
@@ -58,12 +97,6 @@ public class SneakersController : ApiController
 
   [HttpDelete("{id}")]
   public IActionResult Delete()
-  {
-    return Ok();
-  }
-
-  [HttpPost]
-  public IActionResult Create()
   {
     return Ok();
   }

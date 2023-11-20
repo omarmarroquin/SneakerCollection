@@ -1,12 +1,12 @@
 using ErrorOr;
 using MediatR;
+using SneakerCollection.Application.Authentication.Common;
 using SneakerCollection.Application.Common.Interfaces.Authentication;
-using SneakerCollection.Application.Services;
 using SneakerCollection.Domain.Common.Errors;
-using SneakerCollection.Domain.Entities;
+using SneakerCollection.Domain.UserAggregate;
 using SneakerCollection.Infrastructure.Persistence;
 
-namespace SneakerCollection.Application.Authentication.Commands.Register;
+namespace SneakerCollection.Application.Authentication.Queries.Login;
 
 public class LoginQueryHandle : IRequestHandler<LoginQuery, ErrorOr<AuthenticationResult>>
 {

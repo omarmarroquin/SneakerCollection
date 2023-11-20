@@ -1,6 +1,4 @@
-using System.ComponentModel;
-
-namespace SneakerCollection.Contracts.Sneaker;
+namespace SneakerCollection.Contracts.Sneaker.ListSneakers;
 
 public record ListSneakersRequest(
   string? FilterValue,

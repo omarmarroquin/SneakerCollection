@@ -1,10 +1,11 @@
 using SneakerCollection.Contracts.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using SneakerCollection.Application.Services;
 using ErrorOr;
 using Microsoft.AspNetCore.Authorization;
 using MediatR;
 using SneakerCollection.Application.Authentication.Commands.Register;
+using SneakerCollection.Application.Authentication.Common;
+using SneakerCollection.Application.Authentication.Queries.Login;
 
 namespace SneakerCollection.Api.Controllers;
 

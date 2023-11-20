@@ -5,7 +5,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using SneakerCollection.Application.Common.Interfaces.Authentication;
 using SneakerCollection.Application.Common.Interfaces.Services;
-using SneakerCollection.Domain.Entities;
+using SneakerCollection.Domain.UserAggregate;
 
 namespace SneakerCollection.Infrastructure.Authentication;
 

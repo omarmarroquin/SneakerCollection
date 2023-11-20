@@ -1,6 +1,6 @@
-using SneakerCollection.Domain.Entities;
+using SneakerCollection.Domain.UserAggregate;
 
-namespace SneakerCollection.Application.Services;
+namespace SneakerCollection.Application.Authentication.Common;
 
 public record AuthenticationResult(
   User User,

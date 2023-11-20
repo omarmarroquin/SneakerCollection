@@ -1,6 +1,6 @@
 using ErrorOr;
 using MediatR;
-using SneakerCollection.Application.Services;
+using SneakerCollection.Application.Authentication.Common;
 
 namespace SneakerCollection.Application.Authentication.Commands.Register;
 
