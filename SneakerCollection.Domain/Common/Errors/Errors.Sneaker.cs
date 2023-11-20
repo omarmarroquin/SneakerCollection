@@ -10,5 +10,10 @@ public static partial class Errors
       code: "Sneaker.SneakerNotFound",
       description: "Sneaker not found."
     );
+
+    public static Error SneakerNotOwnedByUser = Error.Unauthorized(
+      code: "Sneaker.SneakerNotOwnedByUser",
+      description: "Sneaker not owned by user."
+    );
   }
 }

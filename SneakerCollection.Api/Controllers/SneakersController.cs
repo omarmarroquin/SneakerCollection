@@ -2,6 +2,7 @@ using ErrorOr;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SneakerCollection.Application.Sneakers.Commands.AddSneaker;
+using SneakerCollection.Application.Sneakers.Commands.DeleteSneaker;
 using SneakerCollection.Application.Sneakers.Common;
 using SneakerCollection.Application.Sneakers.Queries.ListSneakers;
 using SneakerCollection.Contracts.Sneaker.AddSneaker;
@@ -96,8 +97,17 @@ public class SneakersController : ApiController
   }
 
   [HttpDelete("{id}")]
-  public IActionResult Delete()
+  public async Task<IActionResult> Delete([FromRoute] DeleteSneakerRequest request)
   {
-    return Ok();
+    if (GetUserId() is not Guid userId)
+      return Problem();
+
+    var deleteSneakerQuery = new DeleteSneakerCommand(userId, request.SneakerId);
+    ErrorOr<DeleteSneakerResult> deleteSneakerResult = await _mediator.Send(deleteSneakerQuery);
+
+    return deleteSneakerResult.Match(
+      deleteSneakerResult => Ok(new DeleteSneakerResponse(deleteSneakerResult.Success)),
+      errors => Problem(errors)
+    );
   }
 }
