@@ -7,6 +7,6 @@ public interface ISneakerRepository
   List<Sneaker> ListSneakersByUserId(Guid userId);
   Sneaker? GetSneakerById(Guid sneakerId);
   void Add(Sneaker sneaker);
-  void Update(Sneaker sneakers);
+  void Update(Sneaker sneaker);
   void Delete(Sneaker sneaker);
 }

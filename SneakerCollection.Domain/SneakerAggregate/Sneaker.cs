@@ -59,4 +59,30 @@ public sealed class Sneaker : AggregateRoot<SneakerId>
       DateTime.UtcNow,
       DateTime.UtcNow);
   }
+
+  public record UpdateSneakerNewData(
+    string Name,
+    string Brand,
+    int Price,
+    int Size,
+    int Year,
+    int Rate
+  );
+
+  public static Sneaker Update(
+    Sneaker sneaker,
+    UpdateSneakerNewData newData)
+  {
+    return new(
+      sneaker.Id,
+      sneaker.UserId,
+      newData.Name,
+      newData.Brand,
+      newData.Price,
+      newData.Size,
+      newData.Rate,
+      newData.Year,
+      sneaker.CreatedAt,
+      DateTime.UtcNow);
+  }
 }
